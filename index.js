@@ -1,7 +1,10 @@
 const Zor = require("zoro-to-api");
 const express = require("express");
+const serverless = require("serverless-http");
 const app = express();
 const cors = require("cors");
+const path = require("path");
+const router = require("express").Router();
 
 app.use(
   cors({
@@ -10,6 +13,9 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/.netlify/functions/index", router); // path must route to lambda
+app.use("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 app.post("/api/search", async (req, res) => {
   const search = req.body.search;
   const data = await Zor.zoroSearch(`${search}`);
@@ -19,6 +25,5 @@ app.get("/name/:name", (req, res) => {
   res.send("Hello " + req.params.name + " your age is " + req.query.age);
 });
 
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
-});
+module.exports = app;
+module.exports.handler = serverless(app);
