@@ -10,7 +10,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.get("/api/search", async (req, res) => {
+app.post("/api/search", async (req, res) => {
   const search = req.body.search;
   const data = await Zor.zoroSearch(`${search}`);
   res.send(data);
