@@ -14,7 +14,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/.netlify/functions/index", router); // path must route to lambda
+app.use("/.netlify/functions/api", router); // path must route to lambda
 app.use("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 app.post("/api/search", async (req, res) => {
   const search = req.body.search;
