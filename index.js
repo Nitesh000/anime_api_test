@@ -3,7 +3,6 @@ const express = require("express");
 const serverless = require("serverless-http");
 const app = express();
 const cors = require("cors");
-const path = require("path");
 const router = require("express").Router();
 
 app.use(
@@ -14,8 +13,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/.netlify/functions/api", router); // path must route to lambda
-app.use("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 app.post("/api/search", async (req, res) => {
   const search = req.body.search;
   const data = await Zor.zoroSearch(`${search}`);
@@ -25,5 +22,5 @@ app.get("/name/:name", (req, res) => {
   res.send("Hello " + req.params.name + " your age is " + req.query.age);
 });
 
-module.exports = app;
+app.use("/.netlify/functions/api", router);
 module.exports.handler = serverless(app);
