@@ -3,7 +3,6 @@ const express = require("express");
 const serverless = require("serverless-http");
 const app = express();
 const cors = require("cors");
-const router = require("express").Router();
 
 app.use(
   cors({
@@ -22,5 +21,6 @@ app.get("/name/:name", (req, res) => {
   res.send("Hello " + req.params.name + " your age is " + req.query.age);
 });
 
-app.use("/.netlify/functions/api", router);
-module.exports.handler = serverless(app);
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
